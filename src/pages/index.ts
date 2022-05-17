@@ -1,5 +1,5 @@
-import { Cart } from "./cart";
-import { Products } from "./products";
+import { Cart } from "./Cart";
+import { Products } from "./Products";
 
 export {
     Cart,

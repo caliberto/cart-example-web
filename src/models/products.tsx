@@ -11,8 +11,9 @@ export interface IProductCart {
 export interface IProduct {
     id: number;
     name: string;
-    code: string;
-    details: IProductDetail[]
+    sku: string;
+    image: string;
+    details: IProductDetail[];
 }
 
 export interface IProductDetail {
