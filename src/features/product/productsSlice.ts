@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { IProduct, IProductCart } from '../../models/products';
-import { getProducts } from './productAPI';
+import { getProducts } from './productsAPI';
 
 export interface ProductsState {
   items: IProduct[];
@@ -14,14 +14,14 @@ const initialState: ProductsState = {
 };
 
 export const loadProductsAsync = createAsyncThunk(
-  'products',
+  'products/fetch',
   async () : Promise<IProduct[]> => {
     const response = await getProducts();
     return response;
   }
 );
 
-export const cartSlice = createSlice({
+export const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
@@ -63,8 +63,8 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { add, remove } = cartSlice.actions;
+export const { add, remove } = productsSlice.actions;
 
-export const countCartItems = (state: RootState) => state.cart.items.length;
+export const countProductsItems = (state: RootState) => state.products.items.length;
 
-export default cartSlice.reducer;
+export default productsSlice.reducer;
