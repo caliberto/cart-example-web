@@ -25,23 +25,23 @@ export const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    add: (state, action: PayloadAction<IProductCart> ) => {
+    addProduct: (state, action: PayloadAction<IProductCart> ) => {
       const product = action.payload;
-      const item = state.items.find((item) => item.id === product.productID)
+      const item = state.items.find((item) => item.ID=== product.productID)
 
       if(item) {
-        const itemDetail = item.details.find(detail => detail.id === product.productDetailID)
+        const itemDetail = item.details.find(detail => detail.ID === product.productDetailID)
         if(itemDetail) {
           itemDetail.quantity += 1;
         }
       }
     },
-    remove: (state, action: PayloadAction<IProductCart>) => {
+    removeProduct: (state, action: PayloadAction<IProductCart>) => {
       const product = action.payload;
-      const item = state.items.find((item) => item.id === product.productID)
+      const item = state.items.find((item) => item.ID === product.productID)
 
       if(item) {
-        const itemDetail = item.details.find(detail => detail.id === product.productDetailID)
+        const itemDetail = item.details.find(detail => detail.ID === product.productDetailID && detail.quantity > 0)
         if(itemDetail) {
           itemDetail.quantity -= 1;
         }
@@ -63,7 +63,7 @@ export const productsSlice = createSlice({
   },
 });
 
-export const { add, remove } = productsSlice.actions;
+export const { addProduct, removeProduct } = productsSlice.actions;
 
 export const countProductsItems = (state: RootState) => state.products.items.length;
 

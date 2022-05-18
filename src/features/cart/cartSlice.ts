@@ -25,17 +25,17 @@ export const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    add: (state, action: PayloadAction<IProductCart> ) => {
+    addCart: (state, action: PayloadAction<IProductCart> ) => {
       const product = action.payload;
-      const cartItem = state.items.find((item) => item.productID === product.productID && item.productDetailID === product.productDetailID)
+      const cartItem = state.items.find((item) => item.productID === product.productID && item.productDetailID === product.productDetailID && product.quantity > 0)
 
       if(cartItem){
         cartItem.quantity += 1;
       } else {
-        state.items.push(product);
+        state.items.push({...product, quantity: 1});
       }
     },
-    remove: (state, action: PayloadAction<IProductCart>) => {
+    removeCart: (state, action: PayloadAction<IProductCart>) => {
       const product = action.payload;
       const cartItem = state.items.find((item) => item.productID === product.productID && item.productDetailID === product.productDetailID)
       const cartItemIndex = state.items.findIndex((item) => item.productID === product.productID && item.productDetailID === product.productDetailID)
@@ -63,8 +63,13 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { add, remove } = cartSlice.actions;
+export const { addCart, removeCart } = cartSlice.actions;
 
-export const countCartItems = (state: RootState) => state.cart.items.length;
+export const countCartItems = (state: RootState) => {
+  let count : number = 0;
+  state.cart.items.forEach(item => count += item.quantity);
+
+  return count;
+};
 
 export default cartSlice.reducer;

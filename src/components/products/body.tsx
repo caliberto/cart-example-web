@@ -5,11 +5,10 @@ import { useEffect } from "react";
 import { Card } from "./Card";
 
 export function Body(): JSX.Element {
-    const products = useAppSelector(state => state.products.items)
+    const products = useAppSelector(state => state.products.items);
     const count = useAppSelector(countProductsItems);
 
-    useEffect(() => { store.dispatch(loadProductsAsync()) }, [])
-    useEffect(() => { if (products.length > 0) console.log(products) }, [products])
+    useEffect(() => { store.dispatch(loadProductsAsync()) }, []);
 
     return (
         <div className="mx-5">
@@ -17,10 +16,8 @@ export function Body(): JSX.Element {
                 <div className="fw-bold fs-3">LAST PRODUCTS AVAILABLE</div>
                 <div className="fs-6 ms-auto">{`${count} products available`}</div>
             </div>
-            <div className=" border-top border-dark row">
-                {
-                    products.map(product => <Card product={product}/>)
-                }
+            <div className="border-top border-dark row">
+                {products.map((product, index) => <Card key={index} product={product}/>)}
             </div>
         </div>
     );

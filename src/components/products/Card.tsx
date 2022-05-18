@@ -1,14 +1,23 @@
-import { IProduct, IProductDetail } from "models/products"
+import { initialProductCart, initialProductDetail, IProduct, IProductCart, IProductDetail } from "models/products"
 import * as Images from "images";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { store } from "app/store";
+import { addCart } from "features/cart/cartSlice";
+import { removeProduct } from "features/product/productsSlice";
 
 interface CardProps {
     product: IProduct
 }
 
 export function Card({ product }: CardProps): JSX.Element {
-    const [detailSelected, setDetailSelected] = useState(null);
-    
+    const [detailSelected, setDetailSelected] = useState<IProductCart>(initialProductCart);
+
+    useEffect(() => {
+        if (product.details.length === 1)
+            selectProductDetail(product.details[0]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     function selectImage() {
         let image: string = "";
         switch (product.image) {
@@ -28,29 +37,71 @@ export function Card({ product }: CardProps): JSX.Element {
                 image = Images.RayBanAviator;
                 break;
         }
-        return image
+        return image;
     }
 
-    const selectDetail = (detail : IProductDetail) => {
-        
+    const productQuantityCount = (): number => {
+        let count: number = 0;
+        product.details.forEach(detail => count += detail.quantity);
+        return count;
+    }
+
+    const productPriceCheck = (): string => {
+        return product.salePrice ? `${product.price} - ${product.salePrice}` : `${product.price}`;
+    }
+
+    const findDetail = (ID: number): IProductDetail => {
+        const detail = product.details.find((detail) => detail.ID === ID);
+        return detail ? detail : initialProductDetail;
+    }
+
+    const selectProductDetail = (detail: IProductDetail) => {
+        const productCart: IProductCart = {
+            name: product.name,
+            price: product.salePrice ? product.salePrice : product.price,
+            productID: product.ID,
+            sku: product.sku,
+            quantity: detail.quantity,
+            productDetailID: detail.ID,
+            size: detail.size,
+        };
+
+        setDetailSelected(productCart);
+    }
+
+    const addToCart = () => {
+        if (detailSelected.quantity !== 0) {
+            store.dispatch(addCart(detailSelected));
+            store.dispatch(removeProduct(detailSelected));
+            setDetailSelected({ ...detailSelected, quantity: detailSelected.quantity - 1 });
+        }
     }
 
     return (
         <div className="col-2 py-3">
-            <div className="border bg-white">
-                <img src={selectImage()} alt="" style={{ width: "100%", height: "150px" }} />
-                <p>{product.name}</p>
-                <p>{product.sku}</p>
-                <select disabled={!(product.details.length > 0)} onChange={selectDetail}>
-                    <option value="default" hidden>
-                        Select a size
-                    </option>
-                    {product.details.map((detail) => {
-                        return <option onClick={selectDetail(detail)}>
-                            {detail.size}
-                        </option>
-                    })}
-                </select>
+            <div className="border border-dark rounded bg-white">
+                <div>
+                    <img className="rounded" src={selectImage()} alt="" style={{ width: "100%", height: "120px" }} />
+                </div>
+                <div className="p-2 border-top border-dark">
+                    <p className="fw-bold fs-5 m-0">{product.name}</p>
+                    <p>{product.sku}</p>
+                    <p>{`Qty: ${productQuantityCount()}`}</p>
+                    <p>{`Price: ${productPriceCheck()}`}</p>
+                    <div className="row m-0">
+                        {product.details.length > 1 && <select className="col-auto" onChange={(e) => selectProductDetail(findDetail(Number(e.target.value)))}>
+                            <option value="default" hidden>
+                                Select size
+                            </option>
+                            {product.details.map((detail, index) => {
+                                return <option value={detail.ID} key={index}>
+                                    {`${detail.size} (${detail.quantity} pcs)`}
+                                </option>
+                            })}
+                        </select>}
+                        <button disabled={detailSelected.quantity === 0} className="col-auto ms-auto" style={{ height: "25px" }} onClick={() => addToCart()}>Add</button>
+                    </div>
+                </div>
             </div>
         </div>
     )
