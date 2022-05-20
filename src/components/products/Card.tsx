@@ -5,6 +5,8 @@ import { store } from "app/store";
 import { addCart } from "features/cart/cartSlice";
 import { removeProduct } from "features/product/productsSlice";
 import { Badge, Button, RelativeContainer, Select, Text } from "components/commons";
+import { toLocalePrice } from "utility/locale/price";
+import { useTheme } from "styled-components";
 
 interface CardProps {
     product: IProduct
@@ -12,6 +14,7 @@ interface CardProps {
 
 export function Card({ product }: CardProps): JSX.Element {
     const [detailSelected, setDetailSelected] = useState<IProductCart>(initialProductCart);
+    const theme = useTheme();
 
     useEffect(() => {
         if (product.details.length === 1)
@@ -47,8 +50,8 @@ export function Card({ product }: CardProps): JSX.Element {
         return count;
     }
 
-    const productPriceCheck = (): string => {
-        return product.salePrice ? `${product.price} - ${product.salePrice}` : `${product.price}`;
+    const productPriceCheck = (): JSX.Element => {
+        return product.salePrice ? <span><s>{toLocalePrice(product.price)}</s>{` ${toLocalePrice(product.salePrice)}`}</span> : <span>{`${toLocalePrice(product.price)}`}</span>;
     }
 
     const findDetail = (ID: number): IProductDetail => {
@@ -96,7 +99,7 @@ export function Card({ product }: CardProps): JSX.Element {
                     </div>
                     <div>
                         <Text variant="label">{"Qty: "}</Text>
-                        <Text variant="text">{productQuantityCount()}</Text>
+                        <Text variant="text" style={{color: productQuantityCount() < 4 ? theme.text.color.alert : ""}}>{productQuantityCount()}</Text>
                         {productQuantityCount() < 4 && productQuantityCount() >= 2 ? <Text variant="alert">{" Last pieces available!"}</Text>
                             : productQuantityCount() === 1 && <Text variant="alert">{" Last piece, buy it now!"}</Text>}
                     </div>

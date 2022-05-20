@@ -16,11 +16,17 @@ export const defaultTheme: DefaultTheme = {
                 default: "#5f729d",
                 disabled: "#999999",
             }
+        },
+        icon: {
+            remove: "#b95151",
+            add: "#6a7ca4",
+            general: "#a1a1a1",
         }
     },
     text: {
         color: {
-            alert: "#c67373"
+            alert: "#b95151",
+            secondary: "#a1a1a1"
         },
     },
     screen: {

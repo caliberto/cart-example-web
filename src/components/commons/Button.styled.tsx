@@ -45,3 +45,9 @@ export const Button = styled.button<IProps>`
         font-size: ${fontSize[10]};
     `}
 `;
+
+export const IconButton = styled.div<{variant : "remove" | "add" | "general"}>`
+    color: ${({variant, theme: { button : { icon } }}) => icon[variant] };
+    font-size: ${({theme: { fontSize }}) => fontSize[10]};
+    font-weight: bold;
+`;

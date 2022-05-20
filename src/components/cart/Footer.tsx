@@ -5,6 +5,7 @@ import { buyCartAsync, countCartItems } from "features/cart/cartSlice";
 import { updateProducts } from "features/product/productsSlice";
 import { IProduct } from "models/products";
 import { useNavigate } from "react-router-dom";
+import {ArrowCircleLeftOutlined} from '@mui/icons-material';
 
 export function Footer(): JSX.Element {
     const cart = useAppSelector(state => state.cart.items);
@@ -18,9 +19,9 @@ export function Footer(): JSX.Element {
     }
 
     return (
-        <div className="border-top border-dark row m-0 py-4 align-items-center">
+        <div className="border-top border-dark row m-0 py-4 px-4 align-items-center">
             <div className="col-auto">
-                <button onClick={() => navigate(-1)}>Go back</button>
+                <div onClick={() => navigate(-1)} role="button"><ArrowCircleLeftOutlined className="me-2 mb-1"/>Go back</div>
             </div>
             <div className="col-auto ms-auto">
                 {`${count} products added`}

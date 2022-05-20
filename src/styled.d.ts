@@ -14,6 +14,7 @@ declare module 'styled-components' {
         text: {
             color: {
                 alert: string
+                secondary: string;
             }
         }
         button : {
@@ -22,6 +23,11 @@ declare module 'styled-components' {
                     default: string;
                     disabled: string;
                 };
+            },
+            icon: {
+                remove: string;
+                add: string;
+                general: string;
             }
         },
         screen : {

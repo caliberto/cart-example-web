@@ -1,11 +1,13 @@
 import { store } from "app/store";
-import { Text } from "components/commons";
+import { IconButton, Text } from "components/commons";
 import { addCart, removeCart } from "features/cart/cartSlice";
 import { addProduct, removeProduct } from "features/product/productsSlice";
 import { IProductCart } from "models/products";
 import { Counter } from "./Counter";
 import { Table, TableItem } from "../commons";
 import { useAppSelector } from "app/hooks";
+import { AddCircleOutlineRounded, RemoveCircleOutlineRounded } from "@mui/icons-material";
+import { toLocalePrice } from "utility/locale/price";
 
 export function Body(): JSX.Element {
     const products = useAppSelector(state => state.products.items)
@@ -15,7 +17,7 @@ export function Body(): JSX.Element {
         {
             head: "Model",
             body: "name",
-            manageItems: (product: IProductCart) => <div onClick={() => removeFromCart(product)}>Rimuovi</div>,
+            manageItems: (product: IProductCart) => <IconButton variant="remove" role="button" onClick={() => removeFromCart(product)}>Remove<RemoveCircleOutlineRounded className="ms-2 mb-1"/></IconButton>,
             order: "asc"
         },
         {
@@ -29,12 +31,13 @@ export function Body(): JSX.Element {
         {
             head: "Qty",
             body: "quantity",
-            manageItems: (product: IProductCart) => <div onClick={() => addToCart(product)}>Aggiungi</div>,
+            manageItems: (product: IProductCart) => <IconButton variant="add" role="button" onClick={() => addToCart(product)}>Add<AddCircleOutlineRounded className="ms-2 mb-1"/></IconButton>,
             order: "asc"
         },
         {
             head: "Price",
-            body: "price"
+            body: "price",
+            formatter: (value : number) => toLocalePrice(value)
         }
     ];
 

@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 import * as Styled from "./Table.styled";
+import {ImportExport} from '@mui/icons-material';
 
 export interface TableItem {
     head: string;
     body: string;
     manageItems?: Function;
     order?: string;
+    formatter?: Function;
 }
 
 interface TableProps {
     tableItems: TableItem[];
     list: any[];
-    relation: string;
+    relation: string; 
 }
 
 export function Table({ tableItems, list, relation }: TableProps) {
@@ -49,17 +51,17 @@ export function Table({ tableItems, list, relation }: TableProps) {
         <Styled.Table className="w-100 mb-4">
             <thead>
                 <tr>
-                    {tableItems.map(({ head, body, order }, index) => <th onClick={() => orderBy(body)} key={index} id={body} className={order}><div className="px-3">{head}</div></th>)}
+                    {tableItems.map(({ head, body, order }, index) => <th role={order && "button"} onClick={() => orderBy(body)} key={index} id={body} className={order}><div className="px-3">{head}{order && <ImportExport className="ms-2"/>}</div></th>)}
                 </tr>
             </thead>
             <tbody>
                 {items.map((item, index) => <tr key={index}>
-                    {tableItems.map(({ body, manageItems }, index) => <td key={index}>
+                    {tableItems.map(({ body, manageItems, formatter }, index) => <td key={index}>
                         <div className="px-3">
                             {manageItems ? <div className="row">
-                                <div className="col-auto">{item[body]}</div>
+                                <div className="col-auto">{formatter ? formatter(item[body]) : item[body]}</div>
                                 <div className="col-auto ms-auto">{manageItems(item)}</div>
-                            </div> : item[body]}
+                            </div> : formatter ? formatter(item[body]) : item[body]}
                         </div>
                     </td>)}
                 </tr>)}

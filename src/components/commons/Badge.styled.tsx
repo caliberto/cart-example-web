@@ -15,8 +15,9 @@ export const Badge = styled.div`
     background-color: ${({theme: { text : {color : {alert}} }}) => alert };
     color: white;
     border-radius: 50%;
-    border: 1px solid grey;
+    border: 1px solid ${({ theme: { text: { color: { secondary } } } }) => secondary};
     font-size: ${({theme: { fontSize }}) => fontSize[12]};
     text-align: center;
-    padding-top: 6px;
+    padding-top: 7px;
+    font-weight: bold;
 `;
