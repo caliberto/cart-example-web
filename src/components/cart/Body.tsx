@@ -7,6 +7,7 @@ import { Counter } from "./Counter";
 import { Table, TableItem } from "../commons";
 import { useAppSelector } from "app/hooks";
 import { AddCircleOutlineRounded, RemoveCircleOutlineRounded } from "@mui/icons-material";
+import { toLocalePrice } from "utility/locale/price";
 
 export function Body(): JSX.Element {
     const products = useAppSelector(state => state.products.items)
@@ -35,7 +36,8 @@ export function Body(): JSX.Element {
         },
         {
             head: "Price",
-            body: "price"
+            body: "price",
+            formatter: (value : number) => toLocalePrice(value)
         }
     ];
 

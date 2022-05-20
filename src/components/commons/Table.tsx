@@ -7,12 +7,13 @@ export interface TableItem {
     body: string;
     manageItems?: Function;
     order?: string;
+    formatter?: Function;
 }
 
 interface TableProps {
     tableItems: TableItem[];
     list: any[];
-    relation: string;
+    relation: string; 
 }
 
 export function Table({ tableItems, list, relation }: TableProps) {
@@ -55,12 +56,12 @@ export function Table({ tableItems, list, relation }: TableProps) {
             </thead>
             <tbody>
                 {items.map((item, index) => <tr key={index}>
-                    {tableItems.map(({ body, manageItems }, index) => <td key={index}>
+                    {tableItems.map(({ body, manageItems, formatter }, index) => <td key={index}>
                         <div className="px-3">
                             {manageItems ? <div className="row">
-                                <div className="col-auto">{item[body]}</div>
+                                <div className="col-auto">{formatter ? formatter(item[body]) : item[body]}</div>
                                 <div className="col-auto ms-auto">{manageItems(item)}</div>
-                            </div> : item[body]}
+                            </div> : formatter ? formatter(item[body]) : item[body]}
                         </div>
                     </td>)}
                 </tr>)}

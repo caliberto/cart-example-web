@@ -25,7 +25,7 @@ export const defaultTheme: DefaultTheme = {
     },
     text: {
         color: {
-            alert: "#c67373",
+            alert: "#b95151",
             secondary: "#a1a1a1"
         },
     },

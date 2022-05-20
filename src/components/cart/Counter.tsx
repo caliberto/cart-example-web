@@ -1,5 +1,6 @@
 import { useAppSelector } from "app/hooks";
 import { totalPieces, totalPrice } from "features/cart/cartSlice";
+import { toLocalePrice } from "utility/locale/price";
 
 export function Counter() {
     const pieces = useAppSelector(totalPieces);
@@ -14,7 +15,7 @@ export function Counter() {
                     </div>
                     <div className="row m-0">
                         <span className="col-auto">{"Total price: "}</span>
-                        <span className="col-auto ms-auto">{price}</span>
+                        <span className="col-auto ms-auto">{toLocalePrice(price)}</span>
                     </div>
                 </div>
             </div>
