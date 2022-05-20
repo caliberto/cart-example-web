@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { store } from "app/store";
 import { addCart } from "features/cart/cartSlice";
 import { removeProduct } from "features/product/productsSlice";
+import { Button, Select, Text } from "components/commons";
 
 interface CardProps {
     product: IProduct
@@ -78,18 +79,30 @@ export function Card({ product }: CardProps): JSX.Element {
     }
 
     return (
-        <div className="col-2 py-3">
+        <div className="col-xl-2 col-lg-3 col-md-4 col-sm-6 py-3 px-2">
             <div className="border border-dark rounded bg-white">
                 <div>
                     <img className="rounded" src={selectImage()} alt="" style={{ width: "100%", height: "120px" }} />
                 </div>
                 <div className="p-2 border-top border-dark">
-                    <p className="fw-bold fs-5 m-0">{product.name}</p>
-                    <p>{product.sku}</p>
-                    <p>{`Qty: ${productQuantityCount()}`}</p>
-                    <p>{`Price: ${productPriceCheck()}`}</p>
+                    <div>
+                        <Text variant="title">{product.name}</Text>
+                    </div>
+                    <div>
+                        <Text variant="subtitle">{product.sku}</Text>
+                    </div>
+                    <div>
+                        <Text variant="label">{"Qty: "}</Text>
+                        <Text variant="text">{productQuantityCount()}</Text>
+                        {productQuantityCount() < 4 && productQuantityCount() >= 2 ? <Text variant="alert">{" Last pieces available!"}</Text>
+                        : productQuantityCount() === 1 && <Text variant="alert">{" Last piece, buy it now!"}</Text>}
+                    </div>
+                    <div>
+                        <Text variant="label">{"Price: "}</Text>
+                        <Text variant="text">{productPriceCheck()}</Text>
+                    </div>
                     <div className="row m-0">
-                        {product.details.length > 1 && <select className="col-auto" onChange={(e) => selectProductDetail(findDetail(Number(e.target.value)))}>
+                        {product.details.length > 1 && <Select className="col-auto" onChange={(e) => selectProductDetail(findDetail(Number(e.target.value)))}>
                             <option value="default" hidden>
                                 Select size
                             </option>
@@ -98,8 +111,14 @@ export function Card({ product }: CardProps): JSX.Element {
                                     {`${detail.size} (${detail.quantity} pcs)`}
                                 </option>
                             })}
-                        </select>}
-                        <button disabled={detailSelected.quantity === 0} className="col-auto ms-auto" style={{ height: "25px" }} onClick={() => addToCart()}>Add</button>
+                        </Select>}
+                        {productQuantityCount() !== 0 && detailSelected.productDetailID === 0 ?
+                            <Button disabled className="col-auto ms-auto" variant="primary-mini-op-disabled">Add</Button>
+                            : productQuantityCount() !== 0 && detailSelected.productDetailID !== 0 && detailSelected.quantity !== 0 ?
+                                <Button className="col-auto ms-auto" onClick={() => addToCart()} variant="primary-mini">Add</Button>
+                                :
+                                <Button disabled className="col-auto ms-auto" variant="primary-mini-disabled">Added all</Button>
+                        }
                     </div>
                 </div>
             </div>

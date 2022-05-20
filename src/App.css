@@ -1,0 +1,8 @@
+:root {
+    --bg-button-primary: #5f729d;
+    --bg-screen-primary: #f1f1f1;
+}
+
+.bg-screen {
+    background-color: var(--bg-screen-primary);
+}
