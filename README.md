@@ -15,3 +15,9 @@
     ]
 }
 ```
+
+Dopo aver startato il server python
+```bash
+npm install
+npm start
+```

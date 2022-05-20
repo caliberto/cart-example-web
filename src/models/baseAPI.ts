@@ -8,7 +8,7 @@ export async function api<T>({ url, method = 'GET', headers = { 'Content-Type': 
     const data = await fetch(buildUrl({ url }), {
         method,
         headers,
-        body
+        body: JSON.stringify(body)
     });
     if (!data.ok) {
         throw new Error(data.statusText);

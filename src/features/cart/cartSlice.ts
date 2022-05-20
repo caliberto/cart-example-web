@@ -15,7 +15,7 @@ const initialState: CartState = {
 
 export const buyCartAsync = createAsyncThunk(
   'cart/buyCart',
-  async (body: object) => {
+  async (body: IProductCart[]) => {
     const response = await buyCart(body);
     return response;
   }

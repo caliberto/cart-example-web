@@ -47,6 +47,9 @@ export const productsSlice = createSlice({
         }
       }
     },
+    updateProducts: (state, action: PayloadAction<IProduct[]>) => {
+      state.items = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -63,7 +66,7 @@ export const productsSlice = createSlice({
   },
 });
 
-export const { addProduct, removeProduct } = productsSlice.actions;
+export const { addProduct, removeProduct, updateProducts } = productsSlice.actions;
 
 export const countProductsItems = (state: RootState) => state.products.items.length;
 
