@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { store } from "app/store";
 import { addCart } from "features/cart/cartSlice";
 import { removeProduct } from "features/product/productsSlice";
-import { Button, Select, Text } from "components/commons";
+import { Badge, Button, RelativeContainer, Select, Text } from "components/commons";
 
 interface CardProps {
     product: IProduct
@@ -80,6 +80,9 @@ export function Card({ product }: CardProps): JSX.Element {
 
     return (
         <div className="col-xl-2 col-lg-3 col-md-4 col-sm-6 py-3 px-2">
+            {productQuantityCount() === 1 && <RelativeContainer>
+                <Badge>LAST</Badge>
+            </RelativeContainer>}
             <div className="border border-dark rounded bg-white">
                 <div>
                     <img className="rounded" src={selectImage()} alt="" style={{ width: "100%", height: "120px" }} />
@@ -95,7 +98,7 @@ export function Card({ product }: CardProps): JSX.Element {
                         <Text variant="label">{"Qty: "}</Text>
                         <Text variant="text">{productQuantityCount()}</Text>
                         {productQuantityCount() < 4 && productQuantityCount() >= 2 ? <Text variant="alert">{" Last pieces available!"}</Text>
-                        : productQuantityCount() === 1 && <Text variant="alert">{" Last piece, buy it now!"}</Text>}
+                            : productQuantityCount() === 1 && <Text variant="alert">{" Last piece, buy it now!"}</Text>}
                     </div>
                     <div>
                         <Text variant="label">{"Price: "}</Text>
